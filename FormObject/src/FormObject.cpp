@@ -1,6 +1,6 @@
-#include "m_object.h"
+#include "FormObject.h"
 
-m_Object::m_Object()
+FormObject::FormObject()
 {
     name   = "";
     type   = "";
@@ -10,7 +10,7 @@ m_Object::m_Object()
     height =  0;
 }
 
-void m_Object::setInfo(string Name, string Type, string Top, string Left, string Width, string Height)
+void FormObject::setInfo(string Name, string Type, string Top, string Left, string Width, string Height)
 {
     name   = Name;
     type   = Type;
@@ -20,11 +20,11 @@ void m_Object::setInfo(string Name, string Type, string Top, string Left, string
     height = atoi( Height.c_str() );
 }
 
-vector<m_Object> *m_Object::Parse(string fileName)
+vector<FormObject> *FormObject::Parse(string fileName)
 {
-    vector<m_Object> *objects = new vector<m_Object>;
-    vector<m_Object *> topObjects;
-    m_Object *currentObject;
+    vector<FormObject> *objects = new vector<FormObject>;
+    vector<FormObject *> topObjects;
+    FormObject *currentObject;
     fstream file;
     string word;
     string name, type, top, left, width, height;
@@ -56,7 +56,7 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 if(++depth != 0)
                     topObjects.push_back(currentObject);
 
-                currentObject = new m_Object();
+                currentObject = new FormObject();
                 currentObject->setName(name);
                 currentObject->setType(type);
             } else
@@ -105,48 +105,48 @@ vector<m_Object> *m_Object::Parse(string fileName)
     return objects;
 }
 
-string m_Object::getInfo()
+string FormObject::getInfo()
 {
     stringstream strm;
     strm << name << " " << type << " " << top << " " << left << " " << width << " " << height << endl;
     return strm.str();
 }
 
-void m_Object::setName(string Name)
+void FormObject::setName(string Name)
 {
     name = Name;
 }
 
-void m_Object::setType(string Type)
+void FormObject::setType(string Type)
 {
     type = Type;
 }
 
-void m_Object::setTop(string Top)
+void FormObject::setTop(string Top)
 {
     top = atoi( Top.c_str() );
 }
 
-void m_Object::setLeft(string Left)
+void FormObject::setLeft(string Left)
 {
     left = atoi( Left.c_str() );
 }
 
-void m_Object::setWidth(string Width)
+void FormObject::setWidth(string Width)
 {
     width = atoi( Width.c_str() );
 }
 
-void m_Object::setHeight(string Height)
+void FormObject::setHeight(string Height)
 {
     height = atoi( Height.c_str() );
 }
-void m_Object::addChild(m_Object child)
+void FormObject::addChild(FormObject child)
 {
     this->childObjects.push_back(child);
 }
 
-vector<m_Object> m_Object::getChildObjects()
+vector<FormObject> FormObject::getChildObjects()
 {
     return childObjects;
 }
