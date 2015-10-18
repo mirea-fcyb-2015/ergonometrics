@@ -6,8 +6,9 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
-#define BUFF_SIZE 128
+#define BUFF_SIZE 512
 
 using namespace std;
 

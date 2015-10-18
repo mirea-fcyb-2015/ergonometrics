@@ -1,6 +1,5 @@
 #include "m_object.h"
-#include <QMessageBox>
-#include <sstream>
+
 
 m_Object::m_Object()
 {
@@ -30,17 +29,15 @@ vector<m_Object> *m_Object::Parse(string fileName)
     fstream file;
     string word;
     string name, type, top, left, width, height;
-    char buff[128];
+    char buff[BUFF_SIZE];
     int depth = -1;
 
-
-
-
     file.open(fileName.c_str(), std::fstream::in | std::fstream::out);
-
+//    static int k = 0, OBJcount = 0, ENDcount = 0;
     if(file.is_open()){
         while(!file.eof())
         {
+//            k++;
             word.clear();
             name.clear();
             type.clear();
@@ -51,12 +48,8 @@ vector<m_Object> *m_Object::Parse(string fileName)
 
             file >> word;
 
-//            QMessageBox b;
-//            QString s( word.c_str() );
-//            b.setText( s );
-//            b.exec();
-
             if( word == "object" ){
+//                OBJcount++;
                 file >> name;
                 name.erase( name.find(":"), 1 );
                 file >> type;
@@ -70,18 +63,10 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 currentObject->setName(name);
                 currentObject->setType(type);
 
-//                QMessageBox b;
-//                stringstream st;
-//                string str;
-//                st << depth << " " << topObjects.size();
-//                st >> str;
-//                QString s( (str + " " + name + " " + type).c_str() );
-//                b.setText( s );
-//                b.exec();
-
                 continue;
             } else
             if( word == "end" ){
+//                ENDcount++;
                 if(depth == 0){
                     objects->push_back(*currentObject);
 
@@ -92,15 +77,6 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 currentObject = topObjects[depth];
                 topObjects.erase( topObjects.end() - 1 );
 
-//                QMessageBox b;
-//                stringstream st;
-//                string str;
-//                st << depth << " " << topObjects.size() << endl;
-//                st >> str;
-//                QString s( str.c_str() );
-//                b.setText( s );
-//                b.exec();
-
                 continue;
             } else
             if( word == "Top" ){
@@ -108,11 +84,6 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 file >> top;
 
                 currentObject->setTop(top);
-
-//                QMessageBox b;
-//                QString s( top.c_str() );
-//                b.setText( s );
-//                b.exec();
 
                 continue;
             } else
@@ -122,11 +93,6 @@ vector<m_Object> *m_Object::Parse(string fileName)
 
                 currentObject->setLeft(left);
 
-//                QMessageBox b;
-//                QString s( left.c_str() );
-//                b.setText( s );
-//                b.exec();
-
                 continue;
             } else
             if( word == "Width" ){
@@ -134,11 +100,6 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 file >> width;
 
                 currentObject->setWidth(width);
-
-//                QMessageBox b;
-//                QString s( width.c_str() );
-//                b.setText( s );
-//                b.exec();
 
                 continue;
             } else
@@ -148,14 +109,10 @@ vector<m_Object> *m_Object::Parse(string fileName)
 
                 currentObject->setHeight(height);
 
-//                QMessageBox b;
-//                QString s( height.c_str() );
-//                b.setText( s );
-//                b.exec();
-
                 continue;
             } else
-                file.getline(buff, 128);
+                file.getline(buff, BUFF_SIZE);
+
         }
         file.close();
     }
