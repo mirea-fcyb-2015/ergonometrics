@@ -54,16 +54,12 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 name.erase( name.find(":"), 1 );
                 file >> type;
 
-                depth++;
-                if(depth != 0)
+                if(++depth != 0)
                     topObjects.push_back(currentObject);
-
 
                 currentObject = new m_Object();
                 currentObject->setName(name);
                 currentObject->setType(type);
-
-                continue;
             } else
             if( word == "end" ){
 //                ENDcount++;
@@ -76,40 +72,30 @@ vector<m_Object> *m_Object::Parse(string fileName)
                 topObjects[--depth]->addChild(*currentObject);
                 currentObject = topObjects[depth];
                 topObjects.erase( topObjects.end() - 1 );
-
-                continue;
             } else
             if( word == "Top" ){
                 file >> word;//word += "="
                 file >> top;
 
                 currentObject->setTop(top);
-
-                continue;
             } else
             if( word == "Left" ){
                 file >> word;//word += "="
                 file >> left;
 
                 currentObject->setLeft(left);
-
-                continue;
             } else
             if( word == "Width" ){
                 file >> word;//word += "="
                 file >> width;
 
                 currentObject->setWidth(width);
-
-                continue;
             } else
             if( word == "Height" ){
                 file >> word;//word += "="
                 file >> height;
 
                 currentObject->setHeight(height);
-
-                continue;
             } else
                 file.getline(buff, BUFF_SIZE);
 
