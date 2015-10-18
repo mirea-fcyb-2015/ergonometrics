@@ -1,6 +1,5 @@
 #include "m_object.h"
 
-
 m_Object::m_Object()
 {
     name   = "";
