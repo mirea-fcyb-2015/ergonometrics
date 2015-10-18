@@ -20,7 +20,6 @@ class m_Object
 public:
     m_Object();
 
-
     static vector<m_Object> *Parse(string fileName);//возвращает коллекцию объектов m_Odject, прочитанную из файла(с учетом иерархии)
 
     string getInfo();//Получаем данные об объекте в виде строки
