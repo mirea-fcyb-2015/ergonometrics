@@ -1,3 +1,11 @@
+/*____________________________FormObject.cpp____________________________*/
+/**
+    \file   FormObject.cpp
+	\brief  Реализация класса объекта на форме
+	\note   Класс содержит данные о геометрии объекта, список дочерних
+	        объектов, а также предоставляет статические методы для 
+			разбора формы .dfm
+*/
 #include "FormObject.h"
 
 FormObject::FormObject()
@@ -8,35 +16,23 @@ FormObject::FormObject()
     left   =  0;
     width  =  0;
     height =  0;
+	childObjects.clear();
 }
 
-void FormObject::setInfo(string Name, string Type, string Top, string Left, string Width, string Height)
+vector<FormObject> FormObject::Parse(string fileName)
 {
-    name   = Name;
-    type   = Type;
-    top    = atoi( Top.c_str() );
-    left   = atoi( Left.c_str() );
-    width  = atoi( Width.c_str() );
-    height = atoi( Height.c_str() );
-}
-
-vector<FormObject> *FormObject::Parse(string fileName)
-{
-    vector<FormObject> *objects = new vector<FormObject>;
-    vector<FormObject *> topObjects;
+    vector<FormObject> objects;
+    vector<FormObject *> topObjects;//!< Стек объектов верхнего уровня
     FormObject *currentObject;
     fstream file;
-    string word;
+    string word, line;
     string name, type, top, left, width, height;
-    char buff[BUFF_SIZE];
     int depth = -1;
 
     file.open(fileName.c_str(), std::fstream::in | std::fstream::out);
-//    static int k = 0, OBJcount = 0, ENDcount = 0;
     if(file.is_open()){
         while(!file.eof())
         {
-//            k++;
             word.clear();
             name.clear();
             type.clear();
@@ -45,13 +41,16 @@ vector<FormObject> *FormObject::Parse(string fileName)
             width.clear();
             height.clear();
 
-            file >> word;
+            line = getNextLine(&file);
+            word = getNextWord(&line);
+
+            static int k =0;
+            std::cout << k++ << endl;
 
             if( word == "object" ){
-//                OBJcount++;
-                file >> name;
+                name = getNextWord(&line);;
                 name.erase( name.find(":"), 1 );
-                file >> type;
+                type = getNextWord(&line);;
 
                 if(++depth != 0)
                     topObjects.push_back(currentObject);
@@ -60,49 +59,105 @@ vector<FormObject> *FormObject::Parse(string fileName)
                 currentObject->setName(name);
                 currentObject->setType(type);
             } else
-            if( word == "end" ){
-//                ENDcount++;
+            if( word == "item" ){
+                if(++depth != 0)
+                    topObjects.push_back(currentObject);
+
+                currentObject = new FormObject();
+                currentObject->setName("item");
+            } else
+            if( word == "end" || word == "end>" ){
                 if(depth == 0){
-                    objects->push_back(*currentObject);
+					/// Добавляем объект верхнего уровня
+                    objects.push_back(*currentObject);
 
                     continue;
                 }
 
+				/// Добавляем дочерний объект 
                 topObjects[--depth]->addChild(*currentObject);
+				
+				/// Снимаем верхний объект со стека
                 currentObject = topObjects[depth];
                 topObjects.erase( topObjects.end() - 1 );
             } else
             if( word == "Top" ){
-                file >> word;//word += "="
-                file >> top;
+                word = getNextWord(&line);
+                top = getNextWord(&line);
 
                 currentObject->setTop(top);
             } else
             if( word == "Left" ){
-                file >> word;//word += "="
-                file >> left;
+                word = getNextWord(&line);
+                left = getNextWord(&line);
 
                 currentObject->setLeft(left);
             } else
             if( word == "Width" ){
-                file >> word;//word += "="
-                file >> width;
+                word = getNextWord(&line);
+                width = getNextWord(&line);
 
                 currentObject->setWidth(width);
             } else
             if( word == "Height" ){
-                file >> word;//word += "="
-                file >> height;
+                word = getNextWord(&line);
+                height = getNextWord(&line);
 
                 currentObject->setHeight(height);
-            } else
-                file.getline(buff, BUFF_SIZE);
-
+            }
         }
         file.close();
     }
 
     return objects;
+}
+
+string FormObject::getNextLine(fstream *file)
+{
+    char buff[BUFF_SIZE];
+    file->getline(buff, BUFF_SIZE);
+
+    /// Удаление ведущх табуляций
+    for(int i = 0; i < BUFF_SIZE; i++)
+    {
+        if( buff[i] == '\t' ){
+            buff[i] = ' ';
+        } else
+            break;
+    }
+
+    string line(buff);
+
+    /// Удаление ведущх пробелов
+    while (line[0] == ' ') {
+        line.erase( line.begin() );
+    }
+
+    return line;
+}
+
+string FormObject::getNextWord(string *Line)
+{
+    if(Line->empty())
+        return *Line;
+
+    string line = *Line;
+    char buff[BUFF_SIZE];
+
+    line.copy(buff, line.find_first_of(" "));
+    if( line.find_first_of(" ") != -1 )
+        line.erase( line.begin(), line.begin() + line.find_first_of(" ") );
+    else
+        line.clear();
+
+    /// Удаление ведущх пробелов
+    while (line[0] == ' ') {
+        line.erase( line.begin() );
+    }
+
+    *Line = line;
+    string word(buff);
+    return word;
 }
 
 string FormObject::getInfo()
@@ -141,6 +196,7 @@ void FormObject::setHeight(string Height)
 {
     height = atoi( Height.c_str() );
 }
+
 void FormObject::addChild(FormObject child)
 {
     this->childObjects.push_back(child);

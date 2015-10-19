@@ -1,6 +1,6 @@
 /*____________________________FormObject.h____________________________*/
 /**
-        \file   FormObject.h
+    \file   FormObject.h
 	\brief  Описание класса объекта на форме
 	\note   Класс содержит данные о геометрии объекта, список дочерних
 	        объектов, а также предоставляет статические методы для 
@@ -27,6 +27,19 @@ using namespace std;
 //! и коллекцию дочерних объектов.
 class FormObject
 {
+private:
+    string name;
+    string type;
+	
+    int top;
+    int left;
+    int width;
+    int height;
+
+    vector<FormObject> childObjects;
+
+    static string getNextLine(fstream *file);
+    static string getNextWord(string *line);
 public:
     FormObject();
 
@@ -39,27 +52,33 @@ public:
 		         Как правило, это только объект формы. Дочерние объекты записываются
 				 в коллекции childObjects соответствующих объектов.
 	*/
-    static vector<FormObject> *Parse(string fileName);//возвращает коллекцию объектов m_Odject, прочитанную из файла(с учетом иерархии)
-
-    string getInfo();//Получаем данные об объекте в виде строки
-    vector<FormObject> getChildObjects();//Возвращает копию коллекции childObjects
-    void addChild(FormObject child);//Добавление объекта в коллекцию childObjects
-    void setInfo(string Name, string Type, string Top, string Left, string Width, string Height);
+    static vector<FormObject> Parse(string fileName);
+	
+    ///Возвращает данные об объекте в виде строки
+    string getInfo();
+	
+	///Возвращает копию коллекции childObjects
+    vector<FormObject> getChildObjects();
+	
+	///Добавление копии объекта в коллекцию childObjects
+    void addChild(FormObject child);
+	
+	/**
+	    \fn       void setName(string Name)
+                  void setType(string Type)
+                  void setTop(string Top)
+                  void setLeft(string Left)
+                  void setWidth(string Width)
+                  void setHeight(string Height)
+	    \brief    Set-методы
+        \note     Все функции получают на вход строковые данные(тип std::string) 		          
+	*/
     void setName(string Name);
     void setType(string Type);
     void setTop(string Top);
     void setLeft(string Left);
     void setWidth(string Width);
     void setHeight(string Height);
-private:
-    string name;
-    string type;
-    int top;
-    int left;
-    int width;
-    int height;
-
-    vector<FormObject> childObjects;
 };
 
 #endif // FormObject_H
