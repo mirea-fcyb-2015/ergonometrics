@@ -48,9 +48,9 @@ vector<FormObject> FormObject::Parse(string fileName)
             std::cout << k++ << endl;
 
             if( word == "object" ){
-                name = getNextWord(&line);;
+                name = getNextWord(&line);
                 name.erase( name.find(":"), 1 );//!< Строка объявления объекта всегда имеет формат "object Name: Type"
-                type = getNextWord(&line);;
+                type = getNextWord(&line);
 
                 if(++depth != 0)
                     topObjects.push_back(currentObject);//!< Объект верхнего уровня на стек, работаем с дочерним
