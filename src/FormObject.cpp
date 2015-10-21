@@ -49,11 +49,11 @@ vector<FormObject> FormObject::Parse(string fileName)
 
             if( word == "object" ){
                 name = getNextWord(&line);;
-                name.erase( name.find(":"), 1 );
+                name.erase( name.find(":"), 1 );//!< Строка объявления объекта всегда имеет формат "object Name: Type"
                 type = getNextWord(&line);;
 
                 if(++depth != 0)
-                    topObjects.push_back(currentObject);
+                    topObjects.push_back(currentObject);//!< Объект верхнего уровня на стек, работаем с дочерним
 
                 currentObject = new FormObject();
                 currentObject->setName(name);
@@ -120,7 +120,7 @@ string FormObject::getNextLine(fstream *file)
     /// Удаление ведущх табуляций
     for(int i = 0; i < BUFF_SIZE; i++)
     {
-        if( buff[i] == '\t' ){
+        if( buff[i] == '\t' || buff[i] == ' ' ){
             buff[i] = ' ';
         } else
             break;

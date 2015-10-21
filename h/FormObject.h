@@ -38,16 +38,33 @@ private:
 
     vector<FormObject> childObjects;
 
+	
+	/**
+		\fn       static string getNextLine(fstream *file)
+		\brief    Функция считывает следущую строку из файла
+		\param    file - указатель на открытый для чтения файл формы
+		\return   Возвращает копию входной строки из файла
+		\note     Происходит удаление ведущих пробелов и табуляций из возвращаемой строки
+	*/
     static string getNextLine(fstream *file);
+	
+	/**
+		\fn       static string getNextWord(string *line)
+		\brief    Функция считывает следущее слово из строки
+		\param    line - указатель на строку
+		\return   Возвращает следущее слово из строки
+		\note     Происходит удаление найденного слова и 
+		          образовавшихся ведущих пробелов из исходной строки
+	*/
     static string getNextWord(string *line);
 public:
     FormObject();
 
 	/**
-	    \fn      static vector<FormObject> *Parse( string fileName )
+	    \fn      static vector<FormObject> Parse( string fileName )
 		\brief   Функция разбирает входной файл формы .dfm
 		\param   fileName - полный путь к форме
-		\return  Возвращает указатель на коллекцию объектов верхнего уровня
+		\return  Возвращает копию коллекции объектов верхнего уровня
 		\note    В возвращаемой коллекции содержатся объекты верхнего уровня.
 		         Как правило, это только объект формы. Дочерние объекты записываются
 				 в коллекции childObjects соответствующих объектов.
