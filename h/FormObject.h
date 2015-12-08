@@ -35,6 +35,7 @@ private:
     int left;
     int width;
     int height;
+    int countElements;
 
     vector<FormObject> childObjects;
 
@@ -96,6 +97,8 @@ public:
     void setLeft(string Left);
     void setWidth(string Width);
     void setHeight(string Height);
+    int  getCountElements();
+    void setCountElements();
 };
 
 #endif // FormObject_H
