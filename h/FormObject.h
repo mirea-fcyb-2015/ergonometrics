@@ -58,6 +58,8 @@ private:
 		          образовавшихся ведущих пробелов из исходной строки
 	*/
     static string getNextWord(string *line);
+
+    static int getDifferentTypesCount(FormObject *form);
 public:
     FormObject();
 
