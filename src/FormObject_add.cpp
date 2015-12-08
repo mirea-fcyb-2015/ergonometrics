@@ -14,7 +14,7 @@ int FormObject::getCountElements()
     int cntElements = 0;
     if(this->childObjects.size() > 0)
         for(int i = 0; i < childObjects.size(); i++)
-            cntElements += childObjects[i].getCountElements;
+            cntElements += childObjects[i].getCountElements();
     else
         cntElements = 1;
 
