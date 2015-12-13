@@ -101,6 +101,7 @@ public:
     void setHeight(string Height);
     int  getCountElements();
     void setCountElements();
+    float getNegativeSpace();
 };
 
 #endif // FormObject_H
