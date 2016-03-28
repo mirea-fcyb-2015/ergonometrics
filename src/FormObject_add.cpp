@@ -46,7 +46,7 @@ bool is_intersection(int x11, int x12, int y11, int y12, int x21, int x22, int y
     line2_b  = y22 - line2_tg * x22;
 
     if(line1_tg == line2_tg)
-        return 0;
+        return false;
 
     cross_point_x = (line2_b - line1_b) / (line1_tg - line2_tg);
     cross_point_y = line1_tg * cross_point_x + line1_b;
@@ -55,8 +55,8 @@ bool is_intersection(int x11, int x12, int y11, int y12, int x21, int x22, int y
         if( ( ((x21 < cross_point_x) && (cross_point_x < x22)) || ((x22 < cross_point_x) && (cross_point_x < x21)) ) )
             if( ( ((y11 < cross_point_y) && (cross_point_y < y12)) || ((y12 < cross_point_y) && (cross_point_y < y11)) ) )
                 if( ( ((y21 < cross_point_y) && (cross_point_y < y22)) || ((y22 < cross_point_y) && (cross_point_y < y21)) ) )
-                    return 1;
-    return 0;
+                    return true;
+    return false;
 
 }
 #endif //FormObject_add.cpp
