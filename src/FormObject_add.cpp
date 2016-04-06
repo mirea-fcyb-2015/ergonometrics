@@ -35,7 +35,7 @@ void FormObject::setCountElements()
      countElements = getCountElements();
 }
 
-bool is_intersection(int x11, int x12, int y11, int y12, int x21, int x22, int y21, int y22)
+bool isIntersection(int x11, int x12, int y11, int y12, int x21, int x22, int y21, int y22)
 {
     float line1_tg, line1_b, line2_tg, line2_b;
     float cross_point_x, cross_point_y;
