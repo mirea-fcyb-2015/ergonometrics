@@ -1,9 +1,4 @@
 #include "control.h"
-/*
-Control::Control()
-{
-
-}*/
 
 void Control::setTop(int val)
 {
@@ -38,4 +33,9 @@ void Control::setType(string val)
 void Control::addChild(Control child)
 {
     childControls.push_back(child);
+}
+
+vector<Control> Control::getChildControls()
+{
+    return childControls;
 }

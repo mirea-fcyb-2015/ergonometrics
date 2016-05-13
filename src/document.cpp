@@ -12,3 +12,8 @@ void Document::loadDocument(string fileName)
     Parser parser(fileName);
     controls = parser.Exec();
 }
+
+void Document::getControlDetails()
+{
+    emit ControlDetails(controls);
+}

@@ -18,9 +18,11 @@ private:
     vector<Control> controls;
 
 signals:
+    void ControlDetails(vector<Control>);
 
 public slots:
     void loadDocument(string fileName);
+    void getControlDetails();
 };
 
 #endif // DOCUMENT_H

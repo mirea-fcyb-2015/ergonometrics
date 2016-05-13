@@ -24,9 +24,12 @@ class Control
     int width;
     int height;
 
+    bool defaultValue = false;
+    bool shortcut = false;
+
     vector<Control> childControls;
 public:
-   // Control();
+    vector<Control> getChildControls();
 
     void setTop(int val);
     void setLeft(int val);
